@@ -27,7 +27,7 @@ int diskstreamer_seek(struct disk_stream* stream, int pos)
 int diskstreamer_read(struct disk_stream* stream, void* out, int total)
 {
     int sector = stream->pos / SECTOR_SIZE;
-    int offset = stream->pos / SECTOR_SIZE;
+    int offset = stream->pos % SECTOR_SIZE;
     char buf[SECTOR_SIZE];
 
     int res = disk_read_block(stream->disk, sector, 1, buf);
@@ -53,7 +53,7 @@ int diskstreamer_read(struct disk_stream* stream, void* out, int total)
         return res;
 }
 
-void diskstream_close(struct disk_stream* stream)
+void diskstreamer_close(struct disk_stream* stream)
 {
     kfree(stream);
 }

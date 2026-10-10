@@ -31,8 +31,8 @@ char* strcpy(char* dest, char* src)
     while(*src != 0)
     {
         *dest = *src;
-        *src += 1;
-        *dest += 1;
+        src++;
+        dest++;
     }
 
     *dest = 0x00;
