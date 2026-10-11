@@ -92,4 +92,6 @@ void kernel_main()
     enable_paging();
 
     enable_interrupts();
+
+    while(1) {}
 }
