@@ -98,7 +98,8 @@ void kernel_main()
     {
         print("\nFile is opened\n");
         char buf[14];
-        fread(buf, 13, 1, fd);
+        fseek(fd, 2, SEEK_SET);     
+        fread(buf, 11, 1, fd);
         buf[13] = 0x00;
         print(buf);
     }
