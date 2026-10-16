@@ -8,6 +8,7 @@
 
 void kernel_main();
 void print(const char* str);
+void panic(const char* msg);
 
 #define ERROR(value)    ((void*)(intptr_t)(value))
 #define ERROR_I(value)  ((int)(intptr_t)(value))
