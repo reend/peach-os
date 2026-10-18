@@ -18,4 +18,13 @@
 
 #define TOTAL_GDT_SEGMENTS      6
 
+#define PROGRAM_VIRTUAL_ADDRESS                 0x400000
+#define USER_PROGRAM_STACK_SIZE                 1024 * 16
+#define PROGRAM_VIRTUAL_STACK_ADDRESS_START     0x3FF000 // shared virtual address 
+#define PROGRAM_VIRTUAL_STACK_ADDRESS_END       PROGRAM_VIRTUAL_STACK_ADDRESS_START - USER_PROGRAM_STACK_SIZE
+
+// same offsets as in gdt
+#define USER_DATA_SEGMENT                       0x23
+#define USER_CODE_SEGMENT                       0x1b
+
 #endif
