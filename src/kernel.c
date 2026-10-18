@@ -12,6 +12,7 @@
 #include "disk/disk.h"
 #include "fs/pparser.h"
 #include "disk/streamer.h"
+#include "task/tss.h"
 #include "gdt/gdt.h"
 #include "config.h"
 
@@ -79,11 +80,15 @@ void panic(const char* msg)
     while(1) {}
 }
 
+struct tss tss;
 struct gdt gdt_real[TOTAL_GDT_SEGMENTS];
 struct gdt_structured gdt_structured[TOTAL_GDT_SEGMENTS] = {
     {.base = 0x00, .limit = 0x00, .type = 0x00},       // null segment
     {.base = 0x00, .limit = 0xffffffff, .type = 0x9a}, // kernel code segment
     {.base = 0x00, .limit = 0xffffffff, .type = 0x92}, // kernel data segment
+    {.base = 0x00, .limit = 0xffffffff, .type = 0xf8}, // user code segment
+    {.base = 0x00, .limit = 0xffffffff, .type = 0xf2}, // user data segment
+    {.base = (uint32_t)&tss, .limit = sizeof(tss), .type = 0xE9}, // TSS segment
 };
 
 void kernel_main()
@@ -103,6 +108,11 @@ void kernel_main()
     disk_search_and_init();
 
     idt_init();
+
+    memset(&tss, 0x00, sizeof(tss));
+    tss.esp0 = 0x600000;
+    tss.ss0 = DATA_SELECTOR;
+    tss_load(0x28); // 0x28 is offset in gdt
 
     kernel_chunk = paging_new_4gb(PAGING_IS_WRITEABLE | PAGING_IS_PRESENT | PAGING_ACCESS_FROM_ALL);
 
