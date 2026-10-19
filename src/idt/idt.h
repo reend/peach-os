@@ -16,7 +16,7 @@ struct idtr_desc
 {
     uint16_t limit; // size of desc table - 1
     uint32_t base; // base addr of the start of interrupt desc table
-} __attribute((packed));
+} __attribute__((packed));
 
 void idt_init();
 void enable_interrupts();
