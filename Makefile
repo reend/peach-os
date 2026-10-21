@@ -9,6 +9,7 @@ all: ./bin/boot.bin ./bin/kernel.bin user_programs
 	dd if=/dev/zero bs=1048576 count=16 >> ./bin/os.bin
 	sudo mount -t vfat ./bin/os.bin /mnt/d
 	sudo cp ./hello.txt /mnt/d
+	sudo cp ./programs/blank/blank.bin /mnt/d
 	sudo umount /mnt/d 
 
 ./bin/kernel.bin: $(FILES)
@@ -84,6 +85,7 @@ all: ./bin/boot.bin ./bin/kernel.bin user_programs
 ./build/string/string.o: ./src/string/string.c
 	i686-elf-gcc ${INCLUDES} -I./src/string ${FLAGS} -std=gnu99 -c ./src/string/string.c -o ./build/string/string.o
 
+# export PATH="$HOME/opt/cross/bin:$PATH"
 run: all
 	qemu-system-x86_64 -hda ./bin/os.bin
 
