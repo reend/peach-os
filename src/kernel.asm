@@ -37,7 +37,7 @@ _start:
 
 ; segments registers are now pointing to kernel data segments
 kernel_registers:
-    mov ax, 10
+    mov ax, 0x10
     mov ds, ax
     mov es, ax
     mov gs, ax 
