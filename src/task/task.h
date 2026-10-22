@@ -4,6 +4,7 @@
 #include "../config.h"
 #include "../memory/paging/paging.h"
 
+struct interrupt_frame;
 // registers of the task when the task is not running
 struct registers
 {
@@ -45,5 +46,6 @@ void task_run_first_ever_task();
 void task_return(struct registers* regs);
 void restore_general_purpose_registers(struct registers* regs);
 void user_registers();
+void task_current_save_state(struct interrupt_frame* frame);
 
 #endif

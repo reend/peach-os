@@ -83,6 +83,12 @@ void panic(const char* msg)
     while(1) {}
 }
 
+void kernel_page()
+{
+    kernel_registers();
+    paging_switch(kernel_chunk);
+}
+
 struct tss tss;
 struct gdt gdt_real[TOTAL_GDT_SEGMENTS];
 struct gdt_structured gdt_structured[TOTAL_GDT_SEGMENTS] = {
@@ -112,6 +118,7 @@ void kernel_main()
 
     idt_init();
 
+    // Give the CPU a kernel stack for interrupts that arrive while a program is running.
     memset(&tss, 0x00, sizeof(tss));
     tss.esp0 = 0x600000;
     tss.ss0 = DATA_SELECTOR;
