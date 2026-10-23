@@ -7,6 +7,7 @@
 #include "memory/heap/kheap.h"
 #include "memory/paging/paging.h"
 #include "memory/memory.h"
+#include "keyboard/keyboard.h"
 #include "string/string.h"
 #include "isr80h/isr80h.h"
 #include "task/task.h"
@@ -135,6 +136,8 @@ void kernel_main()
     enable_paging();
 
     isr80h_register_commands();
+
+    keyboard_init();
 
     struct process* process = 0;
     int res = process_load("0:/blank.bin", &process);
