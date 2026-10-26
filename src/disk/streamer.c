@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include "streamer.h"
 #include "../config.h"
 #include "../memory/heap/kheap.h"
@@ -28,7 +29,15 @@ int diskstreamer_read(struct disk_stream* stream, void* out, int total)
 {
     int sector = stream->pos / SECTOR_SIZE;
     int offset = stream->pos % SECTOR_SIZE;
+    int total_to_read = total;
+
+    bool overflow = (offset + total_to_read) >= SECTOR_SIZE;
     char buf[SECTOR_SIZE];
+
+    if (overflow)
+    {
+        total_to_read -= (offset + total_to_read) - SECTOR_SIZE;
+    }
 
     int res = disk_read_block(stream->disk, sector, 1, buf);
     if (res < 0)
@@ -36,17 +45,15 @@ int diskstreamer_read(struct disk_stream* stream, void* out, int total)
         goto out;
     }
 
-    int total_to_read = total > SECTOR_SIZE ? SECTOR_SIZE : total;
-
     for (int i = 0; i < total_to_read; i++)
     {
         *(char*)out++ = buf[offset+i];
     }
 
     stream->pos += total_to_read;
-    if (total > SECTOR_SIZE)
+    if (overflow)
     {
-        res = diskstreamer_read(stream, out, total - SECTOR_SIZE);
+        res = diskstreamer_read(stream, out, total - total_to_read);
     }
 
     out:
