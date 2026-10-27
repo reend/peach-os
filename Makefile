@@ -111,9 +111,11 @@ run: all
 	qemu-system-x86_64 -hda ./bin/os.bin
 
 user_programs: 
+	cd ./programs/stdlib && ${MAKE} all
 	cd ./programs/blank && ${MAKE} all
 
 user_programs_clean:
+	cd ./programs/stdlib && ${MAKE} clean
 	cd ./programs/blank && ${MAKE} clean
 
 clean: user_programs_clean
