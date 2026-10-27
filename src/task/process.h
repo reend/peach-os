@@ -5,15 +5,24 @@
 #include "../config.h"
 #include "task.h"
 
+#define PROCESS_FILE_TYPE_ELF 0
+#define PROCESS_FILE_TYPE_BINARY 1 
+
+typedef unsigned char PROCESS_FILE_TYPE;
+
 // only 1 task per process
-// no elf here
 struct process
 {
     uint16_t id;
     char filename[MAX_PATH];
     struct task* task;
     void* allocations[MAX_PROGRAM_ALLOCATIONS]; // malloc allocations of a process
-    void* ptr; // physical ptr to process memory
+    PROCESS_FILE_TYPE filetype;
+    union 
+    {
+        void* ptr; // physical ptr to process memory
+        struct elf_file* elf_file;
+    };
     void* stack; // physical ptr to stack memory
     uint32_t size; // size of the data pointer by ptr
     
