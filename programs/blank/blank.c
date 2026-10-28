@@ -1,8 +1,15 @@
 #include "../stdlib/src/peachos.h"
+#include "../stdlib/src/stdlib.h"
 
 int main(int argc, char** argv)
 {
     print("stdlib. test main func\n");
+    
+    void* ptr = malloc(512);
+    if (ptr)
+    {
+
+    }
     
     while(1) 
     {
