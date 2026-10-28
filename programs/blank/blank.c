@@ -6,11 +6,8 @@ int main(int argc, char** argv)
     print("stdlib. test main func\n");
     
     void* ptr = malloc(512);
-    if (ptr)
-    {
+    free(ptr);
 
-    }
-    
     while(1) 
     {
         if (getkey() != 0)
