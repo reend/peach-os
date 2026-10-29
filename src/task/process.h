@@ -11,13 +11,19 @@
 
 typedef unsigned char PROCESS_FILE_TYPE;
 
+struct process_allocation
+{   
+    void* ptr;
+    size_t size;
+};
+
 // only 1 task per process
 struct process
 {
     uint16_t id;
     char filename[MAX_PATH];
     struct task* task;
-    void* allocations[MAX_PROGRAM_ALLOCATIONS]; // malloc allocations of a process
+    struct process_allocation allocations[MAX_PROGRAM_ALLOCATIONS]; // malloc allocations of a process
     PROCESS_FILE_TYPE filetype;
     union 
     {
