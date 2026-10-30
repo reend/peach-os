@@ -153,41 +153,18 @@ void kernel_main()
                                   PAGING_ACCESS_FROM_ALL);
 
     paging_switch(kernel_chunk);
-
-    char *ptr = kzalloc(4096);
-    paging_set(paging_4gb_chunk_get_directory(kernel_chunk), (void *)0x1000,
-               (uint32_t)(uintptr_t)ptr | PAGING_ACCESS_FROM_ALL |
-                   PAGING_IS_PRESENT | PAGING_IS_WRITEABLE);
-
     enable_paging();
 
     isr80h_register_commands();
 
     keyboard_init();
 
-    // process 1
     struct process *process = 0;
-    int res = process_load_switch("0:/blank.elf", &process);
+    int res = process_load_switch("0:/shell.elf", &process);
     if (res != OK)
     {
-        panic("Failed to load blank.elf\n");
+        panic("Failed to load shell.elf\n");
     }
-
-    struct command_argument argument;
-    strcpy(argument.argument, "First");
-    argument.next = 0x00;
-    process_inject_arguments(process, &argument);
-
-    // process 2
-    res = process_load_switch("0:/blank.elf", &process);
-    if (res != OK)
-    {
-        panic("Failed to load blank.elf\n");
-    }
-
-    strcpy(argument.argument, "Second");
-    argument.next = 0x00;
-    process_inject_arguments(process, &argument);
 
     task_run_first_ever_task();
 
