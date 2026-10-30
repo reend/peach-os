@@ -10,9 +10,9 @@ char tolower(char s1)
     return s1;
 }
 
-int strlen(const char* ptr)
+int strlen(const char *ptr)
 {
-    int i = 0; 
+    int i = 0;
     while (*ptr != 0)
     {
         i++;
@@ -22,7 +22,7 @@ int strlen(const char* ptr)
     return i;
 }
 
-int strnlen(const char* ptr, int max)
+int strnlen(const char *ptr, int max)
 {
     int i = 0;
     for (i = 0; i < max; i++)
@@ -34,7 +34,7 @@ int strnlen(const char* ptr, int max)
     return i;
 }
 
-int strnlen_terminator(const char* str, int max, char terminator)
+int strnlen_terminator(const char *str, int max, char terminator)
 {
     int i = 0;
     for (i = 0; i < max; i++)
@@ -48,7 +48,7 @@ int strnlen_terminator(const char* str, int max, char terminator)
     return i;
 }
 
-int istrncmp(const char* s1, const char* s2, int n)
+int istrncmp(const char *s1, const char *s2, int n)
 {
     unsigned char u1, u2;
     while (n-- > 0)
@@ -68,14 +68,14 @@ int istrncmp(const char* s1, const char* s2, int n)
     return 0;
 }
 
-int strncmp(const char* str1, const char* str2, int n)
+int strncmp(const char *str1, const char *str2, int n)
 {
     unsigned char u1, u2;
 
     while (n-- > 0)
     {
         u1 = (unsigned char)*str1++;
-        u2 = (unsigned char)*str2++; 
+        u2 = (unsigned char)*str2++;
 
         if (u1 != u2)
         {
@@ -91,11 +91,11 @@ int strncmp(const char* str1, const char* str2, int n)
     return 0;
 }
 
-char* strcpy(char* dest, char* src)
+char *strcpy(char *dest, char *src)
 {
-    char* res = dest;
+    char *res = dest;
 
-    while(*src != 0)
+    while (*src != 0)
     {
         *dest = *src;
         src++;
@@ -107,7 +107,7 @@ char* strcpy(char* dest, char* src)
     return res;
 }
 
-char* strncpy(char* dest, const char* src, int count)
+char *strncpy(char *dest, const char *src, int count)
 {
     int i = 0;
     for (i = 0; i < count; i++)
@@ -121,18 +121,12 @@ char* strncpy(char* dest, const char* src, int count)
     return dest;
 }
 
-bool is_digit(char c)
-{
-    return c >= 48 && c <= 57;
-}
+bool is_digit(char c) { return c >= 48 && c <= 57; }
 
-int to_numeric_digit(char c)
-{
-    return c - 48;
-}
+int to_numeric_digit(char c) { return c - 48; }
 
-char* sp = 0;
-char* strtok(char* str, const char* delimeters)
+char *sp = 0;
+char *strtok(char *str, const char *delimeters)
 {
     int i = 0;
     int len = strlen(delimeters);
@@ -144,10 +138,10 @@ char* strtok(char* str, const char* delimeters)
     if (str && !sp)
     {
         sp = str;
-    } 
+    }
 
-    char* p_start = sp;
-    while(1)
+    char *p_start = sp;
+    while (1)
     {
         for (i = 0; i < len; i++)
         {
@@ -171,7 +165,7 @@ char* strtok(char* str, const char* delimeters)
         return sp;
     }
 
-    while(*sp != '\0')
+    while (*sp != '\0')
     {
         for (i = 0; i < len; i++)
         {

@@ -1,12 +1,12 @@
 #include "disk.h"
-#include "../io/io.h"
 #include "../config.h"
-#include "../status.h"
+#include "../io/io.h"
 #include "../memory/memory.h"
+#include "../status.h"
 
 struct disk disk;
 
-int disk_read_sector(int lba, int total, void* buf)
+int disk_read_sector(int lba, int total, void *buf)
 {
     outb(0x1F6, (lba >> 24) | 0xE0);
     outb(0x1F2, total);
@@ -15,7 +15,7 @@ int disk_read_sector(int lba, int total, void* buf)
     outb(0x1F5, (unsigned char)(lba >> 16));
     outb(0x1F7, 0x20);
 
-    unsigned short* ptr = (unsigned short*) buf;
+    unsigned short *ptr = (unsigned short *)buf;
 
     for (int b = 0; b < total; b++)
     {
@@ -44,7 +44,7 @@ void disk_search_and_init()
     disk.filesystem = fs_resolve(&disk);
 }
 
-struct disk* disk_get(int index)
+struct disk *disk_get(int index)
 {
     if (index != 0)
     {
@@ -54,7 +54,7 @@ struct disk* disk_get(int index)
     return &disk;
 }
 
-int disk_read_block(struct disk* idisk, unsigned int lba, int total, void* buf)
+int disk_read_block(struct disk *idisk, unsigned int lba, int total, void *buf)
 {
     if (idisk != &disk)
     {

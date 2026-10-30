@@ -1,34 +1,30 @@
 #include "kernel.h"
-#include <stddef.h>
-#include <stdint.h>
+#include "config.h"
+#include "disk/disk.h"
+#include "disk/streamer.h"
+#include "fs/file.h"
+#include "fs/pparser.h"
 #include "gdt/gdt.h"
 #include "idt/idt.h"
 #include "io/io.h"
-#include "memory/heap/kheap.h"
-#include "memory/paging/paging.h"
-#include "memory/memory.h"
-#include "keyboard/keyboard.h"
-#include "string/string.h"
 #include "isr80h/isr80h.h"
-#include "task/task.h"
-#include "task/process.h"
-#include "fs/file.h"
-#include "disk/disk.h"
-#include "fs/pparser.h"
-#include "disk/streamer.h"
-#include "task/tss.h"
-#include "gdt/gdt.h"
-#include "config.h"
+#include "keyboard/keyboard.h"
+#include "memory/heap/kheap.h"
+#include "memory/memory.h"
+#include "memory/paging/paging.h"
 #include "status.h"
+#include "string/string.h"
+#include "task/process.h"
+#include "task/task.h"
+#include "task/tss.h"
+#include <stddef.h>
+#include <stdint.h>
 
-uint16_t* video_mem = 0;
+uint16_t *video_mem = 0;
 uint16_t terminal_row = 0;
 uint16_t terminal_col = 0;
 
-uint16_t terminal_make_char(char c, char colour)
-{
-    return (colour << 8) | c;
-}
+uint16_t terminal_make_char(char c, char colour) { return (colour << 8) | c; }
 
 void terminal_putchar(int x, int y, char c, char colour)
 {
@@ -79,7 +75,7 @@ void terminal_writechar(char c, char colour)
 
 void terminal_initialize()
 {
-    video_mem = (uint16_t*)(0xB8000);
+    video_mem = (uint16_t *)(0xB8000);
     terminal_row = 0;
     terminal_col = 0;
 
@@ -92,7 +88,7 @@ void terminal_initialize()
     }
 }
 
-void print(const char* str)
+void print(const char *str)
 {
     size_t len = strlen(str);
     for (int i = 0; i < len; i++)
@@ -101,12 +97,14 @@ void print(const char* str)
     }
 }
 
-static struct paging_4gb_chunk* kernel_chunk = 0;
+static struct paging_4gb_chunk *kernel_chunk = 0;
 
-void panic(const char* msg)
+void panic(const char *msg)
 {
     print(msg);
-    while(1) {}
+    while (1)
+    {
+    }
 }
 
 void kernel_page()
@@ -144,18 +142,22 @@ void kernel_main()
 
     idt_init();
 
-    // Give the CPU a kernel stack for interrupts that arrive while a program is running.
+    // Give the CPU a kernel stack for interrupts that arrive while a program is
+    // running.
     memset(&tss, 0x00, sizeof(tss));
     tss.esp0 = 0x600000;
     tss.ss0 = DATA_SELECTOR;
     tss_load(0x28); // 0x28 is offset in gdt
 
-    kernel_chunk = paging_new_4gb(PAGING_IS_WRITEABLE | PAGING_IS_PRESENT | PAGING_ACCESS_FROM_ALL);
+    kernel_chunk = paging_new_4gb(PAGING_IS_WRITEABLE | PAGING_IS_PRESENT |
+                                  PAGING_ACCESS_FROM_ALL);
 
     paging_switch(kernel_chunk);
 
-    char* ptr = kzalloc(4096);
-    paging_set(paging_4gb_chunk_get_directory(kernel_chunk), (void*)0x1000, (uint32_t)(uintptr_t)ptr | PAGING_ACCESS_FROM_ALL | PAGING_IS_PRESENT | PAGING_IS_WRITEABLE);
+    char *ptr = kzalloc(4096);
+    paging_set(paging_4gb_chunk_get_directory(kernel_chunk), (void *)0x1000,
+               (uint32_t)(uintptr_t)ptr | PAGING_ACCESS_FROM_ALL |
+                   PAGING_IS_PRESENT | PAGING_IS_WRITEABLE);
 
     enable_paging();
 
@@ -164,7 +166,7 @@ void kernel_main()
     keyboard_init();
 
     // process 1
-    struct process* process = 0;
+    struct process *process = 0;
     int res = process_load_switch("0:/blank.elf", &process);
     if (res != OK)
     {
@@ -189,5 +191,7 @@ void kernel_main()
 
     task_run_first_ever_task();
 
-    while(1) {}
+    while (1)
+    {
+    }
 }

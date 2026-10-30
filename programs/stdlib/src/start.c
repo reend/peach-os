@@ -1,6 +1,6 @@
 #include "peachos.h"
 
-extern int main(int argc, char** argv);
+extern int main(int argc, char **argv);
 
 void c_start()
 {
@@ -10,6 +10,5 @@ void c_start()
     int res = main(arguments.argc, arguments.argv);
     if (res == 0)
     {
-        
     }
 }

@@ -1,12 +1,12 @@
 #include "shell.h"
+#include "../../stdlib/src/peachos.h"
 #include "stdio.h"
 #include "stdlib.h"
-#include "../../stdlib/src/peachos.h"
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     print("PeachOS v1.0.0\n");
-    while(1) 
+    while (1)
     {
         print("> ");
         char buf[1024];
@@ -14,6 +14,6 @@ int main(int argc, char** argv)
         print("\n");
         peachos_system_run(buf);
         print("\n");
-    } 
+    }
     return 0;
 }

@@ -4,14 +4,14 @@
 #include <stdint.h>
 
 struct interrupt_frame;
-typedef void*(*ISR80H_COMMAND)(struct interrupt_frame* frame);
-typedef void(*INTERRUPT_CALLBACK_FUNCTION)();
+typedef void *(*ISR80H_COMMAND)(struct interrupt_frame *frame);
+typedef void (*INTERRUPT_CALLBACK_FUNCTION)();
 
 struct idt_desc
 {
     uint16_t offset_1; // offset bits 0-15
     uint16_t selector; // selector thats in out GDT
-    uint8_t zero; // unused set to zero
+    uint8_t zero;      // unused set to zero
     uint8_t type_attr; // desc type and attr
     uint16_t offset_2; // offset bits 16-31
 } __attribute__((packed));
@@ -19,7 +19,7 @@ struct idt_desc
 struct idtr_desc
 {
     uint16_t limit; // size of desc table - 1
-    uint32_t base; // base addr of the start of interrupt desc table
+    uint32_t base;  // base addr of the start of interrupt desc table
 } __attribute__((packed));
 
 struct interrupt_frame
@@ -43,6 +43,7 @@ void idt_init();
 void enable_interrupts();
 void disable_interrupts();
 void isr80h_register_command(int command_id, ISR80H_COMMAND command);
-int idt_register_interrupt_callback(int interrupt, INTERRUPT_CALLBACK_FUNCTION interrupt_callback);
+int idt_register_interrupt_callback(
+    int interrupt, INTERRUPT_CALLBACK_FUNCTION interrupt_callback);
 
 #endif

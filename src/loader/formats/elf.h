@@ -1,8 +1,8 @@
 #ifndef ELF_H
 #define ELF_H
 
-#include <stdint.h>
 #include <stddef.h>
+#include <stdint.h>
 
 #define PF_X 0x01 // executable segment
 #define PF_W 0x02 // writable segment
@@ -103,7 +103,7 @@ struct elf_header
     elf32_half e_phnum;               // number of program headers
     elf32_half e_shentsize;           // size of one section header
     elf32_half e_shnum;               // number of section headers
-    elf32_half e_shstrndx;            // section index of the section name string table
+    elf32_half e_shstrndx; // section index of the section name string table
 } __attribute__((packed));
 
 // One dynamic-linking entry.
@@ -121,15 +121,15 @@ struct elf32_dyn
 // One symbol.
 struct elf32_sym
 {
-    elf32_word st_name;    // offset of the name in the string table
-    elf32_addr st_value;   // address or offset of the symbol
-    elf32_word st_size;    // size of the object, in bytes
-    unsigned char st_info; // binding and symbol type
+    elf32_word st_name;     // offset of the name in the string table
+    elf32_addr st_value;    // address or offset of the symbol
+    elf32_word st_size;     // size of the object, in bytes
+    unsigned char st_info;  // binding and symbol type
     unsigned char st_other; // visibility, usually zero
-    elf32_half st_shndx;   // section the symbol belongs to
+    elf32_half st_shndx;    // section the symbol belongs to
 } __attribute__((packed));
 
-void* elf_get_entry_ptr(struct elf_header* elf_header);
-uint32_t elf_get_entry(struct elf_header* elf_header);
+void *elf_get_entry_ptr(struct elf_header *elf_header);
+uint32_t elf_get_entry(struct elf_header *elf_header);
 
 #endif

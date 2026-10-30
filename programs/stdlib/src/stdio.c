@@ -9,12 +9,11 @@ int putchar(int c)
     return 0;
 }
 
-
 int printf(const char *fmt, ...)
 {
     va_list ap;
     const char *p;
-    char* sval;
+    char *sval;
     int ival;
 
     va_start(ap, fmt);

@@ -1,7 +1,7 @@
 #include "stdlib.h"
 #include "peachos.h"
 
-char* itoa(int i)
+char *itoa(int i)
 {
     static char text[12];
     int loc = 11;
@@ -13,7 +13,7 @@ char* itoa(int i)
         i = -i;
     }
 
-    while(i)
+    while (i)
     {
         text[--loc] = '0' - (i % 10);
         i /= 10;
@@ -21,19 +21,13 @@ char* itoa(int i)
 
     if (loc == 11)
         text[--loc] = '0';
-    
+
     if (neg)
         text[--loc] = '-';
 
     return &text[loc];
 }
 
-void* malloc(size_t size)
-{
-    return peachos_malloc(size);
-}
+void *malloc(size_t size) { return peachos_malloc(size); }
 
-void free(void* ptr)
-{
-    peachos_free(ptr);
-}
+void free(void *ptr) { peachos_free(ptr); }

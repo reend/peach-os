@@ -1,7 +1,7 @@
 #include "gdt.h"
 #include "../kernel.h"
 
-void encodeGdtEntry(uint8_t* target, struct gdt_structured source)
+void encodeGdtEntry(uint8_t *target, struct gdt_structured source)
 {
     if ((source.limit > 65536) && ((source.limit & 0xFFF) != 0xFFF))
     {
@@ -30,10 +30,12 @@ void encodeGdtEntry(uint8_t* target, struct gdt_structured source)
     target[5] = source.type;
 }
 
-void gdt_structured_to_gdt(struct gdt* gdt, struct gdt_structured* structured_gdt, int total_entries)
+void gdt_structured_to_gdt(struct gdt *gdt,
+                           struct gdt_structured *structured_gdt,
+                           int total_entries)
 {
     for (int i = 0; i < total_entries; i++)
     {
-        encodeGdtEntry((uint8_t*)&gdt[i], structured_gdt[i]);
+        encodeGdtEntry((uint8_t *)&gdt[i], structured_gdt[i]);
     }
 }
