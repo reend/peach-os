@@ -59,6 +59,12 @@ void idt_handle_exception()
     task_next();
 }
 
+void idt_clock()
+{
+    outb(0x20, 0x20);
+    task_next();
+}
+
 void idt_init()
 {
     memset(idt_descriptors, 0, sizeof(idt_descriptors));
@@ -77,6 +83,8 @@ void idt_init()
     {
         idt_register_interrupt_callback(i, idt_handle_exception);
     }
+
+    idt_register_interrupt_callback(0x20, idt_clock);
 
     idt_load(&idtr_descriptor);
 }
