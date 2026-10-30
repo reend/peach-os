@@ -207,6 +207,7 @@ int process_terminate(struct process* process)
     kfree(process->stack);
     task_free(process->task);
     process_unlink(process);
+    print("Process was terminated\n");
 
     out:
         return 0;
